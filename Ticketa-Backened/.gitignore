@@ -4,6 +4,20 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Java
+/target
+*.class
+*.log
+
+# OS files
+.DS_Store
+
+# Environment secrets
+.env
+
+# Maven
+.mvn/
+
 ### STS ###
 .apt_generated
 .classpath
