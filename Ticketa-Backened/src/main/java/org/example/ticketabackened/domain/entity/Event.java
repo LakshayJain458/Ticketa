@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -56,6 +57,9 @@ public class Event {
     @ManyToMany(mappedBy = "staffingEvents")
     private List<User> staffMembers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<TicketType> ticketTypes = new ArrayList<>();
+
     @CreatedDate
     @Column(name = "created_At", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -63,4 +67,17 @@ public class Event {
     @LastModifiedDate
     @Column(name = "modified_At", nullable = false)
     private LocalDateTime modifiedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) && Objects.equals(eventName, event.eventName) && Objects.equals(startDateTime, event.startDateTime) && Objects.equals(endDateTime, event.endDateTime) && Objects.equals(venue, event.venue) && Objects.equals(salesStartDateTime, event.salesStartDateTime) && Objects.equals(salesEndDateTime, event.salesEndDateTime) && status == event.status && Objects.equals(createdAt, event.createdAt) && Objects.equals(modifiedAt, event.modifiedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, eventName, startDateTime, endDateTime, venue, salesStartDateTime, salesEndDateTime, status, createdAt, modifiedAt);
+    }
 }

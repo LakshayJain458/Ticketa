@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +17,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -48,6 +48,9 @@ public class User {
     )
     private List<Event> staffingEvents = new ArrayList<>();
 
+    @OneToMany(mappedBy = "ticketBuyer", cascade = CascadeType.ALL)
+    private List<Ticket> tickets = new ArrayList<>();
+
     @CreatedDate
     @Column(name = "created_At", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -55,4 +58,17 @@ public class User {
     @LastModifiedDate
     @Column(name = "modified_At", nullable = false)
     private LocalDateTime modifiedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt) && Objects.equals(modifiedAt, user.modifiedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, createdAt, modifiedAt);
+    }
 }
