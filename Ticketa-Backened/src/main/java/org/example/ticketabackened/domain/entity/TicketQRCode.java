@@ -21,14 +21,13 @@ public class TicketQRCode {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "code_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private QrCodeStatus codeStatus;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "value", columnDefinition = "TEXT", nullable = false)
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
