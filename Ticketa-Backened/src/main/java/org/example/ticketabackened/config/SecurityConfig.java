@@ -23,6 +23,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(HttpMethod.GET, "/published-events/**").permitAll()
                                 .requestMatchers("/events").hasRole("ORGANISER")
+                                .requestMatchers("/ticket-validations").hasRole("STAFF")
                                 .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->

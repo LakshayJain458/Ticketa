@@ -10,8 +10,11 @@ import org.example.ticketabackened.domain.entity.Ticket;
 import org.example.ticketabackened.domain.entity.TicketQRCode;
 import org.example.ticketabackened.domain.enums.QrCodeStatus;
 import org.example.ticketabackened.exceptionHandler.QrCodeGenerationException;
+import org.example.ticketabackened.exceptionHandler.QrCodeNotFoundException;
 import org.example.ticketabackened.repositories.QrCodeRepository;
 import org.example.ticketabackened.service.QrCodeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -27,6 +30,7 @@ public class QrCodeServiceImpl implements QrCodeService {
 
     private static final int QR_CODE_WIDTH = 300;
     private static final int QR_CODE_HEIGHT = 300;
+    private static final Logger log = LoggerFactory.getLogger(QrCodeServiceImpl.class);
 
     private final QRCodeWriter qrCodeWriter;
 
@@ -48,6 +52,19 @@ public class QrCodeServiceImpl implements QrCodeService {
 
         } catch (WriterException | IOException ex) {
             throw new QrCodeGenerationException("Error while generating QR Code", ex);
+        }
+    }
+
+    @Override
+    public byte[] getQrCodeImageForUserAndTicket(UUID userId, UUID ticketId) {
+        TicketQRCode qrCode = qrCodeRepo.findByTicketIdAndTicket_TicketBuyerId(ticketId, userId)
+                .orElseThrow(QrCodeNotFoundException::new);
+
+        try {
+            return Base64.getDecoder().decode(qrCode.getValue());
+        } catch (IllegalArgumentException ex) {
+            log.error("Invalid QR Code for ticketId : {}", ticketId, ex);
+            throw new QrCodeNotFoundException();
         }
     }
 
