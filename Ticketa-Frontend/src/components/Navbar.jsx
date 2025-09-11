@@ -11,12 +11,21 @@ import {
 } from "./ui/dropdown-menu";
 import { LogOut } from "lucide-react";
 import { useRoles } from "@/roles/useRoles";
-import { Link } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const NavBar = () => {
   const { user, signoutRedirect, signinRedirect, isAuthenticated } = useAuth();
-  const { isOrganizer } = useRoles();
+  const { isOrganizer, isAttendee } = useRoles();
+
+  const navigate = useNavigate();
+
+  const handleBrandClick = (e) => {
+    e.preventDefault();
+    if (isOrganizer) navigate("/organizers");
+    else if (isAttendee) navigate("/");
+    else navigate("/");
+  };
 
   return (
     <motion.nav
@@ -28,12 +37,13 @@ const NavBar = () => {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Brand */}
         <div className="flex gap-12 items-center">
-          <Link
-            to="/"
+          <a
+            href="#"
+            onClick={handleBrandClick}
             className="text-2xl font-extrabold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent hover:scale-105 transition-transform"
           >
             Ticketa
-          </Link>
+          </a>
 
           {/* Navigation Links */}
           <div className="hidden md:flex text-gray-300 gap-8">
@@ -42,9 +52,6 @@ const NavBar = () => {
                 Events
               </Link>
             )}
-            <Link to="/dashboard/tickets" className="hover:text-cyan-400 transition-colors">
-              Tickets
-            </Link>
           </div>
         </div>
 

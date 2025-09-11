@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 
+import Footer from "@/components/Footer";
+
 const LoginPage = () => {
   const { isLoading, isAuthenticated, signinRedirect } = useAuth();
 
@@ -15,6 +17,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
       <p className="animate-pulse text-lg">Redirecting to login...</p>
+  <Footer />
     </div>
   );
 };

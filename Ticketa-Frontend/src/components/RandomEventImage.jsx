@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 const fallbackImages = [
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836", // concert crowd
-  "https://images.unsplash.com/photo-1531058020387-3be344556be6", // conference stage
-  "https://images.unsplash.com/photo-1549921296-3a18cae6c36b", // festival lights
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee", // people cheering
+  "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29uY2VydHxlbnwwfHwwfHx8MA%3D%3D", // concert crowd
+  "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y29uY2VydHxlbnwwfHwwfHx8MA%3D%3D", // conference stage
+  "https://images.unsplash.com/photo-1497911270199-1c552ee64aa4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNvbmNlcnR8ZW58MHx8MHx8fDA%3D", // festival lights
+  "https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGNvbmNlcnR8ZW58MHx8MHx8fDA%3D", // people cheering
 ];
 
 const RandomEventImage = () => {

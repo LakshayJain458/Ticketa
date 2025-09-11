@@ -72,7 +72,7 @@ export const updateEvent = (accessToken, id, request) =>
     token: accessToken,
   });
 
-export const listEvents = (accessToken, page, size = 2) =>
+export const listEvents = (accessToken, page, size = 3) =>
   apiFetch(`/events/list-all?page=${page}&size=${size}`, {
     token: accessToken,
   });

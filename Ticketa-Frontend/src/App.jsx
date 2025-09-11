@@ -2,6 +2,7 @@ import { AuthProvider } from "react-oidc-context";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AttendeeLandingPage from "./pages/attendee/index";
 import OrganizersLandingPage from "./pages/organiser/landing";
+import MainLandingPage from "./pages/MainLanding";
 import DashboardManageEventPage from "./pages/organiser/events/manage";
 import DashboardListEventsPage from "./pages/organiser/events/list";
 import DashboardListTicketsPage from "./pages/attendee/tickets-list";
@@ -13,9 +14,11 @@ import DashboardPage from "./pages/Dashboard/index";
 import LoginPage from "./pages/auth/login";
 import CallbackPage from "./pages/auth/callback";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
-  { path: "/", Component: AttendeeLandingPage },
+  { path: "/", Component: MainLandingPage },
+  { path: "/events", Component: AttendeeLandingPage },
   { path: "/callback", Component: CallbackPage },
   { path: "/login", Component: LoginPage },
   { path: "/events/:id", Component: PublishedEventsPage },
@@ -60,6 +63,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  
   {
     path: "/dashboard/tickets",
     element: (
@@ -95,7 +99,8 @@ const oidcConfig = {
 const App = () => {
   return (
     <AuthProvider {...oidcConfig}>
-      <RouterProvider router={router} />
+  <RouterProvider router={router} />
+  <Toaster position="bottom-right" />
     </AuthProvider>
   );
 };

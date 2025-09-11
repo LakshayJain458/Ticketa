@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
+import { useRoles } from "@/roles/useRoles";
 
 const CallbackPage = () => {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  const { isLoading: rolesLoading, isOrganizer } = useRoles();
 
   useEffect(() => {
     if (isLoading) return;
@@ -14,11 +18,21 @@ const CallbackPage = () => {
       if (redirectPath) {
         localStorage.removeItem("redirectPath");
         navigate(redirectPath);
+        return;
+      }
+
+      // If roles are still loading, wait until roles are available
+      if (rolesLoading) return;
+
+      // Send organisers to the public organiser landing page instead of dashboard
+      if (isOrganizer) {
+        navigate("/organizers", { replace: true });
       } else {
-        navigate("/"); // fallback if no redirect path saved
+        // default fallback (attendees/staff) — keep previous behavior
+        navigate("/", { replace: true });
       }
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, rolesLoading, isOrganizer, navigate]);
 
   if (isLoading) {
     return (
@@ -31,6 +45,7 @@ const CallbackPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
       <p className="text-lg">Completing login...</p>
+      <Footer />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // ⬅️ added useNavigate
 import { format, isValid } from "date-fns";
-import { Calendar, DollarSign, MapPin, Tag } from "lucide-react";
+import { Calendar, DollarSign, MapPin, Tag, ArrowLeft } from "lucide-react"; // ⬅️ ArrowLeft icon
 
 import { getTicket, getTicketQr } from "@/lib/api";
 
@@ -14,8 +14,8 @@ const ViewTicketPage = () => {
 
   const { id } = useParams();
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate(); // ⬅️ init navigate
 
-  // safe parse helper for possibly-missing or invalid date strings
   const parseDate = (value) => {
     if (!value) return null;
     const d = new Date(value);
@@ -70,7 +70,19 @@ const ViewTicketPage = () => {
 
   return (
     <div className="bg-black min-h-screen text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-6">
+        
+        {/* 🔙 Back Button */}
+        <button
+          onClick={() => navigate("/dashboard/tickets")}
+          className="flex items-center gap-2 text-gray-300 hover:text-white 
+                     transition-colors text-sm font-medium"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Tickets
+        </button>
+
+        {/* 🎟️ Ticket Card */}
         <div className="relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-3xl p-8 shadow-2xl">
           {/* Status */}
           <div className="bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full mb-8 text-center">
@@ -88,6 +100,7 @@ const ViewTicketPage = () => {
             </div>
           </div>
 
+          {/* Date/Time */}
           <div className="flex items-center gap-2 text-purple-300 mb-8">
             <Calendar className="w-4 text-purple-200" />
             <div>
