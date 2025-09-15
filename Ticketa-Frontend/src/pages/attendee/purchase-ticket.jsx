@@ -17,11 +17,9 @@ const PurchaseTicketPage = () => {
 
   useEffect(() => {
     if (!isPurchaseSuccess) return;
-
     const timer = setTimeout(() => {
-      navigate("/");
-    }, 3000);
-
+      navigate("/dashboard/tickets");
+    }, 2500);
     return () => clearTimeout(timer);
   }, [isPurchaseSuccess, navigate]);
 
@@ -47,13 +45,17 @@ const PurchaseTicketPage = () => {
     return (
       <div className="bg-black min-h-screen text-white flex items-center justify-center">
         <div className="max-w-md mx-auto p-8 text-center">
-          <div className="bg-white p-8 rounded-xl shadow-2xl text-black">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-green-600">Thank you!</h2>
-            <p className="text-gray-600">Your ticket purchase was successful.</p>
-            <p className="text-gray-500 text-sm mt-2">
-              Redirecting to home page...
-            </p>
+          <div className="bg-white p-8 rounded-xl shadow-2xl text-black space-y-4">
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-2" />
+            <h2 className="text-2xl font-bold text-green-600">Purchase Successful</h2>
+            <p className="text-gray-700">Your ticket has been issued.</p>
+            <div className="text-gray-500 text-sm">Redirecting to your tickets...</div>
+            <Button
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+              onClick={() => navigate("/dashboard/tickets")}
+            >
+              View My Tickets Now
+            </Button>
           </div>
         </div>
       </div>

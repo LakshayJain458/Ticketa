@@ -1,5 +1,4 @@
 package org.example.ticketabackened.repositories;
-
 import org.example.ticketabackened.domain.entity.Event;
 import org.example.ticketabackened.domain.enums.EventStatus;
 import org.springframework.data.domain.Page;

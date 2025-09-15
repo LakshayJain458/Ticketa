@@ -23,35 +23,43 @@ const AttendeeLandingPage = () => {
   const [publishedEvents, setPublishedEvents] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [query, setQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Debounce timer ref (implicit with closure)
+  useEffect(() => {
+    // When query changes, reset to first page
+    setPage(0);
+  }, [query]);
 
   useEffect(() => {
-    if (query && query.length > 0) {
-      queryPublishedEvents();
-    } else {
-      refreshPublishedEvents();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+    let active = true;
+    const run = async () => {
+      try {
+        if (query && query.trim().length > 0) {
+          setIsSearching(true);
+          const data = await searchPublishedEvents(query.trim(), page);
+          if (active) setPublishedEvents(data);
+        } else {
+          setIsSearching(true);
+          const data = await listPublishedEvents(page);
+          if (active) setPublishedEvents(data);
+        }
+      } catch (err) {
+        if (active) setError(err?.message || "An unknown error occurred");
+      } finally {
+        if (active) setIsSearching(false);
+      }
+    };
 
-  const refreshPublishedEvents = async () => {
-    try {
-      setPublishedEvents(await listPublishedEvents(page));
-    } catch (err) {
-      setError(err?.message || "An unknown error occurred");
-    }
-  };
+    // debounce (250ms)
+    const handle = setTimeout(run, 250);
+    return () => {
+      active = false;
+      clearTimeout(handle);
+    };
+  }, [query, page]);
 
-  const queryPublishedEvents = async () => {
-    if (!query) {
-      await refreshPublishedEvents();
-      return;
-    }
-    try {
-      setPublishedEvents(await searchPublishedEvents(query, page));
-    } catch (err) {
-      setError(err?.message || "An unknown error occurred");
-    }
-  };
+  // old query/refresh helpers removed in favor of unified effect
 
   if (error) {
     return (
@@ -106,15 +114,22 @@ const AttendeeLandingPage = () => {
               transition={{ duration: 1 }}
               className="flex gap-2 w-full max-w-xl"
             >
-              <Input
-                className="flex-1 bg-white/90 text-black placeholder-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500"
-                placeholder="Search events by name, location, or type..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
+              <div className="relative flex-1">
+                <Search className="h-4 w-4 text-gray-600 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Input
+                  className="w-full pl-9 bg-white/90 text-black placeholder-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500"
+                  placeholder="Search events by name, location, or type..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                {isSearching && (
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 animate-pulse">Searching...</span>
+                )}
+              </div>
               <Button
-                onClick={queryPublishedEvents}
-                className="rounded-xl bg-cyan-600 hover:bg-cyan-500 transition flex items-center gap-2"
+                // disabled
+                className="rounded-xl bg-blue-500 opacity-60 flex items-center gap-2"
+                title="Type to search"
               >
                 <Search className="h-4 w-4" /> Search
               </Button>

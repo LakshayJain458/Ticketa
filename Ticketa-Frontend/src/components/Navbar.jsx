@@ -23,7 +23,7 @@ const NavBar = () => {
   const handleBrandClick = (e) => {
     e.preventDefault();
     if (isOrganizer) navigate("/organizers");
-    else if (isAttendee) navigate("/");
+    else if (isAttendee) navigate("/events");
     else navigate("/");
   };
 
@@ -52,6 +52,9 @@ const NavBar = () => {
                 Events
               </Link>
             )}
+            <Link to="/dashboard/tickets" className="hover:text-cyan-400 transition-colors">
+              Tickets
+            </Link>
           </div>
         </div>
 

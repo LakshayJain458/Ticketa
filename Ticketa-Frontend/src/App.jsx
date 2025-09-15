@@ -10,6 +10,7 @@ import DashboardViewTicketPage from "./pages/attendee/view-ticket";
 import PublishedEventsPage from "./pages/attendee/published-event";
 import PurchaseTicketPage from "./pages/attendee/purchase-ticket";
 import DashboardValidateQrPage from "./pages/staff/validate-qr";
+import StaffLandingPage from "./pages/staff";
 import DashboardPage from "./pages/Dashboard/index";
 import LoginPage from "./pages/auth/login";
 import CallbackPage from "./pages/auth/callback";
@@ -63,7 +64,6 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  
   {
     path: "/dashboard/tickets",
     element: (
@@ -85,6 +85,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <DashboardValidateQrPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/dashboard/staff",
+    element: (
+      <ProtectedRoute>
+        <StaffLandingPage />
       </ProtectedRoute>
     ),
   },

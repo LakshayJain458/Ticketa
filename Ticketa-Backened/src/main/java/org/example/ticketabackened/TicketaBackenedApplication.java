@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "org.example.ticketabackened.repositories")
-@EntityScan(basePackages = "org.example.ticketabackened.domain.entity")
+@EntityScan("org.example.ticketabackened.domain.entity")
 @EnableJpaAuditing
 public class TicketaBackenedApplication {
 

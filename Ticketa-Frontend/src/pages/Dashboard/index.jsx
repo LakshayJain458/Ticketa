@@ -13,7 +13,7 @@ const DashboardPage = () => {
     if (isOrganizer) {
       navigate("/dashboard/events", { replace: true });
     } else if (isStaff) {
-      navigate("/dashboard/validate-qr", { replace: true });
+      navigate("/dashboard/staff", { replace: true });
     } else {
       navigate("/dashboard/tickets", { replace: true });
     }

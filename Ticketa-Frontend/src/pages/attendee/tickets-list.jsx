@@ -9,6 +9,7 @@ import { useAuth } from "react-oidc-context";
 import { useRoles } from "@/roles/useRoles";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const DashboardListTicketsPage = () => {
   const { isLoading, user } = useAuth();
@@ -22,13 +23,13 @@ const DashboardListTicketsPage = () => {
   });
   const [error, setError] = useState(undefined);
   const [page, setPage] = useState(0);
-  const { isAttendee, isLoading: rolesLoading } = useRoles();
+  const { isAttendee, isOrganizer, isLoading: rolesLoading } = useRoles();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoading || !user?.access_token) return;
-    // deny access for non-attendees
-    if (!rolesLoading && !isAttendee) {
+    // allow access for attendees or organisers (organisers see tickets for their events)
+    if (!rolesLoading && !isAttendee && !isOrganizer) {
       navigate("/");
       return;
     }
@@ -81,7 +82,7 @@ const DashboardListTicketsPage = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-black min-h-screen text-white flex flex-col">
       <NavBar />
 
       {/* --- Hero Section --- */}
@@ -178,11 +179,12 @@ const DashboardListTicketsPage = () => {
       </div>
 
       {/* --- Pagination --- */}
-      <div className="flex justify-center pb-12">
+      <div className="flex justify-center pb-12 mt-auto">
         {tickets && (
           <SimplePagination pagination={tickets} onPageChange={setPage} />
         )}
       </div>
+      <Footer />
     </div>
   );
 };

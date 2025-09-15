@@ -27,9 +27,12 @@ const CallbackPage = () => {
       // Send organisers to the public organiser landing page instead of dashboard
       if (isOrganizer) {
         navigate("/organizers", { replace: true });
-      } else {
-        // default fallback (attendees/staff) — keep previous behavior
-        navigate("/", { replace: true });
+      } else if (!rolesLoading && !isOrganizer) {
+        // Staff users should land on staff dashboard
+        // useRoles exposes isStaff via hook; import inside file isn't necessary here because
+        // Dashboard redirect will handle final routing for authenticated pages. Default to events for attendees.
+        // We'll send to /dashboard which will redirect appropriately based on role
+        navigate("/dashboard", { replace: true });
       }
     }
   }, [isLoading, isAuthenticated, rolesLoading, isOrganizer, navigate]);
@@ -45,7 +48,7 @@ const CallbackPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
       <p className="text-lg">Completing login...</p>
-      <Footer />
+  <Footer />
     </div>
   );
 };
