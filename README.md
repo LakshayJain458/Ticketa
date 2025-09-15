@@ -55,6 +55,7 @@ User (id, username, email)
 
 Event (status=PUBLISHED|DRAFT|...) ──< TicketType ──< Ticket ──< TicketValidation
                                   └─< Ticket (via TicketType)
+
 Ticket ──< TicketQRCode (versioned QR payloads, regeneration allowed)
 ```
 
@@ -110,14 +111,6 @@ Example validation request:
 }
 ```
 
-## 🧪 Testing Strategy (Planned)
-* Service layer unit tests with mocked repositories
-* Spring MVC slice tests for controllers (WebMvcTest)
-* Repository tests using H2 + schema generation
-* Token parsing & role mapping unit test for `useRoles` hook (JSDOM / Vitest)
-
-> Add a `Test` badge once CI is wired.
-
 ## 📂 Actual Project Layout
 ```
 Ticketa/
@@ -155,15 +148,15 @@ Ticketa/
 
 ### 1. Clone
 ```bash
-git clone https://github.com/<your-username>/Ticketa.git
+git clone https://github.com/LakshayJain458/Ticketa.git
 cd Ticketa
 ```
 
 ### 2. Start Auth (Keycloak Dev)
 Create `Ticketa-Backened/.env`:
 ```env
-KEYCLOAK_ADMIN=admin
-KEYCLOAK_ADMIN_PASSWORD=admin
+KEYCLOAK_ADMIN=yourusername
+KEYCLOAK_ADMIN_PASSWORD=yourpassword
 ```
 Then from backend folder:
 ```bash
@@ -223,25 +216,12 @@ Frontend: http://localhost:5173
 * WebSocket push for real-time validation feedback
 * Multi-tenancy (realm-per-organization) strategy
 
-## 🛡️ Security Notes
-* CORS restricted to dev origin. For prod add env-driven whitelist.
-* Validate ownership server-side on every organizer action (service layer already enforces through filtering queries).
-* QR tokens should avoid embedding sensitive PII (store opaque ID only).
-* Consider adding refresh tokens or silent re-auth on expiry.
-
-## 🧪 QA / CI (Planned Roadmap)
-* Add GitHub Actions workflow: build + test + formatting check
-* SonarCloud or SpotBugs integration for static analysis
-* Frontend type safety (migrate to TypeScript) → medium effort
-
 ## 🗺️ Roadmap
 | Milestone | Status |
 |-----------|--------|
 | Core CRUD & ticket purchase | ✅
 | QR generation & validation | ✅
 | Search published events | ✅
-| CI pipeline | ⏳
-| TypeScript migration (frontend) | 💤
 | Dockerizing full stack (API + DB + Keycloak + Frontend) | ⏳
 | Test coverage >70% | ⏳
 
@@ -255,11 +235,6 @@ Conventional Commit format encouraged (e.g., `feat: add ticket transfer endpoint
 
 ## 📜 License
 MIT © 2025 Lakshay Jain
-
-## 🙌 Acknowledgements
-* Inspiration & patterns from Spring Security & community tutorials
-* Radix UI & Tailwind team for accessible primitives
-* ZXing project for robust QR tooling
 
 ---
 If this repo helps you, consider ⭐ starring it and opening an issue with feedback!
